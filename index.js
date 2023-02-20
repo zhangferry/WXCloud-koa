@@ -1,10 +1,13 @@
+const { Configuration, OpenAIApi } = require('openai');
 const Koa = require("koa");
 const Router = require("koa-router");
 const logger = require("koa-logger");
 const bodyParser = require("koa-bodyparser");
 const fs = require("fs");
 const path = require("path");
-const { init: initDB, Counter } = require("./db");
+const { 
+  init: initDB, Counter 
+} = require("./db");
 
 const router = new Router();
 
@@ -33,16 +36,33 @@ router.post("/api/count", async (ctx) => {
   };
 });
 
+const configuration = new Configuration({
+  apiKey: "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",
+});
+const openai = new OpenAIApi(configuration);
+
+async function getAIResponse(prompt) {
+  const completion = await openai.createCompletion({
+    model: 'text-davinci-003',
+    prompt,
+    max_tokens: 1024,
+    temperature: 0.1,
+  });
+  return (completion?.data?.choices?.[0].text || 'AI 挂了').trim();
+}
+
 // 反弹用户消息
 router.post('/message/post', async ctx => {
   const { ToUserName, FromUserName, Content, CreateTime } = ctx.request.body;
+
+  const response = await getAIResponse(Content);
 
   ctx.body = {
     ToUserName: FromUserName,
     FromUserName: ToUserName,
     CreateTime: +new Date(),
     MsgType: 'text',
-    Content: `反弹你发的消息：${Content}`,
+    Content: response,
   };
 });
 

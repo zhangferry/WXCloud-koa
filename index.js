@@ -48,6 +48,8 @@ async function getAIResponse(prompt) {
     max_tokens: 1024,
     temperature: 0.1,
   });
+  console.log("~~~~~~");
+  console.log(completion);
   return (completion?.data?.choices?.[0].text || 'AI 挂了').trim();
 }
 
@@ -55,8 +57,13 @@ async function getAIResponse(prompt) {
 router.post('/message/post', async ctx => {
   const { ToUserName, FromUserName, Content, CreateTime } = ctx.request.body;
 
+  console.log(FromUserName);
+  console.log(ToUserName);
+  console.log(Content);
   const response = await getAIResponse(Content);
 
+  console.log("~~~~");
+  console.log(response);
   ctx.body = {
     ToUserName: FromUserName,
     FromUserName: ToUserName,

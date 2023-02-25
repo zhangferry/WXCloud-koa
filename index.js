@@ -1,4 +1,5 @@
 const { Configuration, OpenAIApi } = require('openai');
+const axios = require('axios');
 const Koa = require("koa");
 const Router = require("koa-router");
 const logger = require("koa-logger");
@@ -12,6 +13,8 @@ const {
 const router = new Router();
 
 const homePage = fs.readFileSync(path.join(__dirname, "index.html"), "utf-8");
+
+const openaiApiKey = "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"
 
 // 首页
 router.get("/", async (ctx) => {
@@ -36,15 +39,18 @@ router.post("/api/count", async (ctx) => {
   };
 });
 
+
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: openaiApiKey,
 });
 const openai = new OpenAIApi(configuration);
 
+// 这个函数调用有问题
 async function getAIResponse(prompt) {
+  debugger
   const completion = await openai.createCompletion({
     model: 'text-davinci-003',
-    prompt,
+    prompt: prompt,
     max_tokens: 1024,
     temperature: 0.1,
   });
@@ -53,6 +59,37 @@ async function getAIResponse(prompt) {
   return (completion?.data?.choices?.[0].text || 'AI 挂了').trim();
 }
 
+// 使用http链接调用
+async function getChatGPTResponse(prompt) {
+  console.log(prompt)
+
+  const data = {
+    prompt: prompt,
+      max_tokens: 1024,
+      temperature: 0.9,
+      model: "text-davinci-003"
+  }
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${openaiApiKey}`
+  }
+
+  var text = ""
+  await axios.post('https://api.openai.com/v1/completions', data, {
+    headers: headers
+  })
+  .then(response => {
+    console.log('Response:', response.data);
+    text = response.data.choices[0].text;
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+
+  return text
+}
+
+
 // 反弹用户消息
 router.post('/message/post', async ctx => {
   const { ToUserName, FromUserName, Content, CreateTime } = ctx.request.body;
@@ -60,7 +97,7 @@ router.post('/message/post', async ctx => {
   console.log(FromUserName);
   console.log(ToUserName);
   console.log(Content);
-  const response = await getAIResponse(Content);
+  const response = await getChatGPTResponse(Content);
 
   console.log("~~~~");
   console.log(response);

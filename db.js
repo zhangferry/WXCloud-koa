@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
-// 配置环境变量
+// local config
 // process.env.MYSQL_USERNAME = "root"
 // process.env.MYSQL_PASSWORD = "Zhangferry.123"
 

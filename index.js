@@ -1,4 +1,4 @@
-const { Configuration, OpenAIApi } = require('openai');
+// const { Configuration, OpenAIApi } = require('openai');
 const axios = require('axios');
 const Koa = require("koa");
 const Router = require("koa-router");
@@ -40,10 +40,10 @@ router.post("/api/count", async (ctx) => {
 });
 
 
-const configuration = new Configuration({
-  apiKey: openaiApiKey,
-});
-const openai = new OpenAIApi(configuration);
+// const configuration = new Configuration({
+//   apiKey: openaiApiKey,
+// });
+// const openai = new OpenAIApi(configuration);
 
 // 这个函数调用有问题
 async function getAIResponse(prompt) {

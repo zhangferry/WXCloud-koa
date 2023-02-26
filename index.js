@@ -29,12 +29,12 @@ const CLEAR_KEY_IMAGE = `${CLEAR_KEY}1`;
 
 const AI_IMAGE_KEY = '作画';
 
-const AI_THINKING_MESSAGE = '我已经在编了，请稍等几秒后复制原文再说一遍~';
+const AI_THINKING_MESSAGE = '我已经在想了，请稍等几秒后复制原文再说一遍~';
 
 const LIMIT_AI_TEXT_COUNT = 10;
 const LIMIT_AI_IMAGE_COUNT = 5;
 
-const LIMIT_COUNT_RESPONSE = '对不起，因为ChatGPT调用收费，您的免费使用额度已用完~'
+const LIMIT_COUNT_RESPONSE = '对不起，因为 OpenAI 调用收费，您的免费额度已用完~'
 
 async function buildCtxPrompt({ FromUserName }) {
   // 获取最近对话

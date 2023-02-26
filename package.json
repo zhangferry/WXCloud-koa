@@ -4,7 +4,7 @@
   "description": "zhangferry chatgpt服务",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "env OPENAI_APPKEY=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 node index.js"
   },
   "author": "zhangferry",
   "license": "Apache-2.0",
@@ -19,7 +19,8 @@
     "koa-logger": "^3.2.1",
     "koa-router": "^10.1.1",
     "mysql2": "^2.3.3",
+    "openai": "^3.1.0",
     "sequelize": "^6.13.0"
   },
-  "repository": "git@github.com:wuomzfx/wx-chatgpt.git"
+  "repository": "git@github.com:zhangferry/WXCloud-koa.git"
 }

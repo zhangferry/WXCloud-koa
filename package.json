@@ -4,7 +4,7 @@
   "description": "zhangferry chatgpt服务",
   "main": "index.js",
   "scripts": {
-    "start": "env OPENAI_APPKEY=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 node index.js"
+    "start": "node index.js"
   },
   "author": "zhangferry",
   "license": "Apache-2.0",

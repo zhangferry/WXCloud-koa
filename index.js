@@ -80,6 +80,7 @@ const openai = new OpenAIApi(configuration);
 // 获取文本
 async function getAIResponse(prompt) {
   debugger
+  var response = ""
   try {
     const completion = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
@@ -94,7 +95,7 @@ async function getAIResponse(prompt) {
     });
     console.log("~~~~~~");
     console.log(completion);
-    const response = (completion?.data?.choices?.[0].message.content || 'AI 挂了').trim();
+    response = (completion?.data?.choices?.[0].message.content || 'AI 挂了').trim();
   } catch (error) {
     if (error.response) {
       console.log(error.response.status);

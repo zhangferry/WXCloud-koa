@@ -109,12 +109,22 @@ async function getAIResponse(prompt) {
 }
 // 获取图片
 async function getAIIMAGE(prompt) {
-  const response = await openai.createImage({
-    prompt: prompt,
-    n: 1,
-    size: '1024x1024',
-  });
-
+  var response = ""
+  try {
+    response = await openai.createImage({
+      prompt: prompt,
+      n: 1,
+      size: '1024x1024',
+    });
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.status);
+      console.log(error.response.data);
+    } else {
+      console.log(error.message);
+    }
+  }
+  
   const imageURL = response?.data?.data?.[0].url || 'AI 作画挂了';
 
   return imageURL;
@@ -136,9 +146,9 @@ async function getAIMessage({ Content, FromUserName }) {
   }
 
   // 在回答中
-  // if (message?.status === MESSAGE_STATUS_THINKING) {
-  //   return AI_THINKING_MESSAGE;
-  // }
+  if (message?.status === MESSAGE_STATUS_THINKING) {
+    return AI_THINKING_MESSAGE;
+  }
 
   const aiType = Content.startsWith(AI_IMAGE_KEY)
     ? AI_TYPE_IMAGE

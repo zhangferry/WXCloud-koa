@@ -19,7 +19,7 @@
     "koa-logger": "^3.2.1",
     "koa-router": "^10.1.1",
     "mysql2": "^2.3.3",
-    "openai": "^3.1.0",
+    "openai": "^3.2.1",
     "sequelize": "^6.13.0"
   },
   "repository": "git@github.com:zhangferry/WXCloud-koa.git"

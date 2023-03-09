@@ -80,15 +80,29 @@ const openai = new OpenAIApi(configuration);
 // 获取文本
 async function getAIResponse(prompt) {
   debugger
-  const completion = await openai.createCompletion({
-    model: 'gpt-3.5-turbo',
-    prompt: prompt,
-    max_tokens: 1024,
-    temperature: 0.1,
-  });
-  console.log("~~~~~~");
-  console.log(completion);
-  const response = (completion?.data?.choices?.[0].text || 'AI 挂了').trim();
+  try {
+    const completion = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          "role": "user",
+          "content": prompt
+        }
+      ],
+      max_tokens: 1024,
+      temperature: 1,
+    });
+    console.log("~~~~~~");
+    console.log(completion);
+    const response = (completion?.data?.choices?.[0].message.content || 'AI 挂了').trim();
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.status);
+      console.log(error.response.data);
+    } else {
+      console.log(error.message);
+    }
+  }
 
   return strip(response, ['\n', 'A: ']);
 }
@@ -121,9 +135,9 @@ async function getAIMessage({ Content, FromUserName }) {
   }
 
   // 在回答中
-  if (message?.status === MESSAGE_STATUS_THINKING) {
-    return AI_THINKING_MESSAGE;
-  }
+  // if (message?.status === MESSAGE_STATUS_THINKING) {
+  //   return AI_THINKING_MESSAGE;
+  // }
 
   const aiType = Content.startsWith(AI_IMAGE_KEY)
     ? AI_TYPE_IMAGE
